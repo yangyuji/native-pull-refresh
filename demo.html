@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="" type="image/x-icon">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <title>naturePullRefresh.js</title>
+    <link rel="stylesheet" href="./style.css"/>
+</head>
+<body>
+
+<div id="container">
+
+    <div class="pull-down-content">
+        <div id="arrowIcon"></div>
+        <div id="pullIcon" class="spinner" style="display: none;"></div>
+        <span id="pullText">刷新成功</span>
+    </div>
+
+    <div id="wrapper">
+    
+        <ul id="recommend-hot-list" class="ul recommend-hot-list">
+
+            <div class="quan-panel has-top">
+                <div class="quan-panel__bd js-topic-info">
+
+                    <div class="quan-media-box">
+                        <div class="quan-media-box__person">
+                            <img class="person_avator" src="./img/etc_img_free.png">
+                            <div class="person_content">
+                                <div class="person_content-title">下来刷新效果
+                                    <span class="person_content__tag hide author">圈主</span>
+                                    <span class="person_content__tag top">置顶</span>
+                                    <span class="person_content__tag hot">精华</span>
+                                </div>
+                                <div class="person_content-text">2017.10.28 11:37</div>
+                            </div>
+                        </div>
+                        <div class="quan-media-box__content ellips-content">
+                            原生js实现的下拉刷新demo
+                        </div>
+
+                        <div class="quan-media-box__img hide">
+                            <img src="./img/logo_100_100.png">
+                        </div>
+
+                        <div class="quan-media-box__file hide">
+                            <img class="file-logo" src="./img/logo_100_100.png">
+                            <div class="file-name">文件名么么哒Save.doc</div>
+                        </div>
+
+                        <div class="quan-media-box__opt hide">
+                            <div class="opt-item">
+                                点赞 999
+                            </div>
+                            <div class="opt-split"></div>
+                            <div class="opt-item">
+                                评论 999
+                            </div>
+                        </div>
+                    </div>
+                    <div class="quan-media-box">
+                        <div class="quan-media-box__person">
+                            <img class="person_avator" src="./img/etc_img_free.png">
+                            <div class="person_content">
+                                <div class="person_content-title">下来刷新效果
+                                    <span class="person_content__tag hide author">圈主</span>
+                                    <span class="person_content__tag top">置顶</span>
+                                    <span class="person_content__tag hot">精华</span>
+                                </div>
+                                <div class="person_content-text">2017.10.28 11:37</div>
+                            </div>
+                        </div>
+                        <div class="quan-media-box__content ellips-content">
+                            原生js实现的下拉刷新demo
+                        </div>
+                    </div>
+                    
+                    <div class="quan-media-box">
+                        <div class="quan-media-box__person">
+                            <img class="person_avator" src="./img/etc_img_free.png">
+                            <div class="person_content">
+                                <div class="person_content-title">下来刷新效果
+                                    <span class="person_content__tag hide author">圈主</span>
+                                    <span class="person_content__tag top">置顶</span>
+                                    <span class="person_content__tag hot">精华</span>
+                                </div>
+                                <div class="person_content-text">2017.10.28 11:37</div>
+                            </div>
+                        </div>
+                        <div class="quan-media-box__content ellips-content">
+                            原生js实现的下拉刷新demo
+                        </div>
+                    </div>
+                    
+                    <div class="quan-media-box">
+                        <div class="quan-media-box__person">
+                            <img class="person_avator" src="./img/etc_img_free.png">
+                            <div class="person_content">
+                                <div class="person_content-title">下来刷新效果
+                                    <span class="person_content__tag hide author">圈主</span>
+                                    <span class="person_content__tag top">置顶</span>
+                                    <span class="person_content__tag hot">精华</span>
+                                </div>
+                                <div class="person_content-text">2017.10.28 11:37</div>
+                            </div>
+                        </div>
+                        <div class="quan-media-box__content ellips-content">
+                            原生js实现的下拉刷新demo
+                        </div>
+                    </div>
+                    
+                    <div class="quan-media-box">
+                        <div class="quan-media-box__person">
+                            <img class="person_avator" src="./img/etc_img_free.png">
+                            <div class="person_content">
+                                <div class="person_content-title">下来刷新效果
+                                    <span class="person_content__tag hide author">圈主</span>
+                                    <span class="person_content__tag top">置顶</span>
+                                    <span class="person_content__tag hot">精华</span>
+                                </div>
+                                <div class="person_content-text">2017.10.28 11:37</div>
+                            </div>
+                        </div>
+                        <div class="quan-media-box__content ellips-content">
+                            原生js实现的下拉刷新demo
+                        </div>
+                    </div>
+                    
+                    <div class="quan-media-box">
+                        <div class="quan-media-box__person">
+                            <img class="person_avator" src="./img/etc_img_free.png">
+                            <div class="person_content">
+                                <div class="person_content-title">下来刷新效果
+                                    <span class="person_content__tag hide author">圈主</span>
+                                    <span class="person_content__tag top">置顶</span>
+                                    <span class="person_content__tag hot">精华</span>
+                                </div>
+                                <div class="person_content-text">2017.10.28 11:37</div>
+                            </div>
+                        </div>
+                        <div class="quan-media-box__content ellips-content">
+                            原生js实现的下拉刷新demo
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </ul>
+    </div>
+
+</div>
+
+<script src="./pullDownRefresh.js"></script>
+<script type="text/javascript">
+
+    NaturePullRefresh.init({
+        container: 'container',
+        beforePull: function () {
+          console.log('beforePull');
+        },
+        onRefresh: function () {
+          console.log('onRefresh');
+        },
+        afterPull: function () {
+          console.log('afterPull');
+        }
+    });
+    
+</script>
+
+</body>
+</html>
