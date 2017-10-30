@@ -78,6 +78,7 @@
             var pullIcon = getEle('pullIcon'),              // 下拉loading
                 pullText = getEle('pullText'),              // 下拉文字
                 pullArrow = getEle('arrowIcon'),            // 下拉箭头
+                pullTop = getEle('pullTop'),                // 拉动的头部
                 dom = getEle(opt.container);                // 主容器
 
             dom.addEventListener('touchstart', function (event) {
@@ -88,7 +89,7 @@
 
                 event = event.touches[0];
                 dragStart = event.clientY;
-                dom.style.cssText += '-webkit-transition: none';
+                dom.style.transition = 'none';
 
                 util.hide(pullIcon);
                 util.removeClass(pullArrow, 'down');
@@ -133,9 +134,9 @@
                         }
 
                         if (percentage > 0) {
-                            dom.style.cssText += '-webkit-transform: translate3d(0,' + translateX + 'px,0)';
+                            dom.style.transform = 'translate3d(0,' + translateX + 'px,0)';
                         } else {
-                            dom.style.cssText += '-webkit-transform: translate3d(0,' + translateX + 'px,0)';
+                            dom.style.transform = 'translate3d(0,' + translateX + 'px,0)';
                         }
                     } else {
                         if (joinRefreshFlag === null) {
@@ -164,11 +165,11 @@
 
                     opt.onRefresh && opt.onRefresh();
 
-                    dom.style.cssText += '-webkit-transition: 330ms';
+                    dom.style.transition = '330ms';
                     pullText.textContent = '正在刷新..';
                     util.show(pullIcon);
                     util.hide(pullArrow);
-                    dom.style.cssText += '-webkit-transform: translate3d(0,' + 43 + 'px,0)';
+                    dom.style.transform = 'translate3d(0,' + pullTop.clientHeight + 'px,0)';
 
                     // 进入下拉刷新状态
                     refreshFlag = 1;
@@ -176,7 +177,7 @@
 
                         pullText.textContent = '刷新成功';
                         util.hide(pullIcon);
-                        dom.style.cssText += '-webkit-transform: translate3d(0,0,0)';
+                        dom.style.transform = 'translate3d(0,0,0)';
 
                         setTimeout(function(){
                             opt.afterPull && opt.afterPull();
@@ -189,8 +190,8 @@
                     if (joinRefreshFlag) {
                         refreshFlag = 1;
 
-                        dom.style.cssText += '-webkit-transition: 330ms';
-                        dom.style.cssText += '-webkit-transform: translate3d(0,0,0)';
+                        dom.style.transition = '330ms';
+                        dom.style.transform = 'translate3d(0,0,0)';
 
                         setTimeout(function () {
                             opt.afterPull && opt.afterPull();
