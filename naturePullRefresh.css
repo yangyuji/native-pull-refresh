@@ -8,12 +8,17 @@
 */
 
 .pull-down-content {
+	position: relative;
 	margin-top: -50px;
 	height: 50px;
 	text-align: center;
 	line-height: 50px;
 	font-size: 14px;
-	background-color: transparent;
+	z-index: 1;
+}
+
+.pull-down-content.no-margin {
+	margin-top: 0;
 }
 
 .pull-down-content .pointer {

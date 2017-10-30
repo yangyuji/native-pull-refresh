@@ -2,7 +2,7 @@
 * author: "oujizeng",
 * license: "MIT",
 * name: "naturePullRefresh.js",
-* version: "1.0.0"
+* version: "1.1.0"
 */
 
 (function (root, factory) {
@@ -107,11 +107,10 @@
                 var target = event.touches[0];
                 percentage = (dragStart - target.clientY) / window.screen.height;
 
-                var oTop = document.body.scrollTop === 0 ? document.documentElement.scrollTop : document.body.scrollTop;
                 // 当scrolltop是0且往下滚动
-                if (oTop === 0) {
+                if (dom.scrollTop === 0) {
                     if (percentage < 0) {
-                        
+
                         event.preventDefault();
 
                         if (!changeOneTimeFlag) {
@@ -165,10 +164,11 @@
 
                     opt.onRefresh && opt.onRefresh();
 
-                    dom.style.transition = '330ms';
-                    pullText.textContent = '正在刷新..';
-                    util.show(pullIcon);
                     util.hide(pullArrow);
+                    dom.style.transition = '330ms';
+                    util.show(pullIcon);
+                    pullText.textContent = '正在刷新..';
+                    // dom.style.overflow = 'inherit';
                     dom.style.transform = 'translate3d(0,' + pullTop.clientHeight + 'px,0)';
 
                     // 进入下拉刷新状态
@@ -176,8 +176,8 @@
                     setTimeout(function () {
 
                         pullText.textContent = '刷新成功';
-                        util.hide(pullIcon);
                         dom.style.transform = 'translate3d(0,0,0)';
+                        util.hide(pullIcon);
 
                         setTimeout(function(){
                             opt.afterPull && opt.afterPull();
