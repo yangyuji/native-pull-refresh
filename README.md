@@ -22,4 +22,12 @@
 > * 使用方法：参考demo.html。
 
 ## 预览
-![扫描二维码](https://github.com/yangyuji/naturePullRefresh.js/blob/master/qrcode.png)
+
+### 普通页面滚动
+![扫描二维码](https://github.com/yangyuji/naturePullRefresh.js/blob/master/img/qrcode.png)
+
+### 页面带有头部栏
+![扫描二维码](https://github.com/yangyuji/naturePullRefresh.js/blob/master/img/qrcode_has_top.png)
+
+### 页面带有头部栏
+![扫描二维码](https://github.com/yangyuji/naturePullRefresh.js/blob/master/img/qrcode_section.png)
