@@ -20,3 +20,6 @@
 ## 说明
 > * style.css是我写的页面样式，仅仅作为demo的展示样式；
 > * 使用方法：参考demo.html。
+
+## 预览
+![扫描二维码](https://github.com/yangyuji/naturePullRefresh.js/blob/master/qrcode.png)
