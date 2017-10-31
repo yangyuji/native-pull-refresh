@@ -5,20 +5,34 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
     <link rel="shortcut icon" href="" type="image/x-icon">
     <meta content="telephone=no,email=no" name="format-detection">
-    <title>naturePullRefresh.js</title>
+    <title>naturePullRefresh</title>
     <link rel="stylesheet" href="./style.css"/>
+    <style>
+        html, body {
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
 
-<div id="container">
+<div class="top-bar fixed">
+    <img class="top-icon" src="./img/etc_img_free.png">
+    <div class="top-content">
+        <span class="top-content-title">这是标题和App名称</span>
+        <span class="top-content-text">-</span>
+    </div>
+    <a href="javascript:;" class="btn primary mini">打开App</a>
+</div>
 
-    <div id="pullTop" class="pull-down-content">
+<div id="container" class="pull-wrapper">
+
+    <div id="pullTop" class="pull-top">
         <div id="arrowIcon"></div>
         <div id="pullIcon" class="pointer" style="display: none;"></div>
         <span id="pullText">刷新成功</span>
     </div>
 
-    <div id="wrapper">
+    <div class="pull-scroll">
 
         <div class="quan-panel has-top">
 
@@ -94,8 +108,15 @@
 
             </div>
         </div>
+
+        <div class="quan-loadmore">数据加载中...</div>
+
     </div>
 
+</div>
+
+<div class="quan-page-input">
+    <div class="input_cnt">发表评论...</div>
 </div>
 
 <script src="./naturePullRefresh.js"></script>
@@ -134,7 +155,7 @@
     }
 
     NaturePullRefresh.init({
-        container: 'container',
+        container: '#container',
         beforePull: function () {
           console.log('beforePull');
         },
