@@ -22,5 +22,5 @@
 > * 使用方法：参考demo.html。
 
 ## 预览
-
-![扫描二维码](https://github.com/yangyuji/naturePullRefresh.js/blob/master/img/qrcode.png)
+> * 页面[点击这里](https://yangyuji.github.io/native-pull-refresh/demo.html)
+> * ![扫描二维码](https://github.com/yangyuji/naturePullRefresh.js/blob/master/img/qrcode.png)
