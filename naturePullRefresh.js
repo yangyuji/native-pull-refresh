@@ -143,7 +143,7 @@
 
                     util.addClass(pullArrow, 'none');
                     util.removeClass(pullIcon, 'none');
-                    pullText.textContent = '正在刷新..';
+                    pullText.textContent = '正在刷新';
 
                     scroll.style.webkitTransitionDuration = '300ms';
                     scroll.style.transitionDuration = '300ms';
