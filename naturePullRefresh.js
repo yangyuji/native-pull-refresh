@@ -2,7 +2,7 @@
 * author: "oujizeng",
 * license: "MIT",
 * name: "naturePullRefresh.js",
-* version: "1.2.0"
+* version: "1.2.1"
 */
 
 (function (root, factory) {
@@ -19,29 +19,9 @@
 
     var getEle = function (str) {
         return document.querySelector(str);
-    }, elementDisplay = {};
+    };
 
     var util = {
-        show: function (dom) {
-            dom.style.display == "none" && (dom.style.display = '')
-            if (getComputedStyle(dom, '').getPropertyValue("display") == "none")
-                dom.style.display = this.defaultDisplay(dom.nodeName)
-        },
-        hide: function (dom) {
-            dom.style.display = "none";
-        },
-        defaultDisplay: function (nodeName) {
-            var element, display
-            if (!elementDisplay[nodeName]) {
-                element = document.createElement(nodeName)
-                document.body.appendChild(element)
-                display = getComputedStyle(element, '').getPropertyValue("display")
-                element.parentNode.removeChild(element)
-                display == "none" && (display = "block")
-                elementDisplay[nodeName] = display
-            }
-            return elementDisplay[nodeName]
-        },
         hasClass: function (e, c) {
             var re = new RegExp("(^|\\s)" + c + "(\\s|$)");
             return re.test(e.className);
@@ -67,7 +47,7 @@
 
         init: function(opt){
 
-            var dragThreshold = opt.dragThreshold || 0.2,   // 临界值
+            var dragThreshold = opt.dragThreshold || 0.18,   // 临界值
                 moveCount = opt.moveCount || 200,           // 位移系数
 
                 // 执行完需要还原的值
@@ -79,6 +59,7 @@
 
             var pullIcon = getEle('#pullIcon'),              // 下拉loading
                 pullText = getEle('#pullText'),              // 下拉文字
+                succIcon = getEle('#succIcon'),              // 刷新成功icon
                 pullArrow = getEle('#arrowIcon'),            // 下拉箭头
                 pullTop = getEle('#pullTop'),                // 拉动的头部
                 container = getEle(opt.container),           // 主容器
@@ -94,7 +75,9 @@
                 scroll.style.webkitTransform = '0ms';
                 scroll.style.transition = '0ms';
 
-                util.hide(pullIcon);
+                util.addClass(succIcon, 'none');
+                util.addClass(pullIcon, 'none');
+                util.removeClass(pullArrow, 'none');
                 util.removeClass(pullArrow, 'down');
                 util.removeClass(pullArrow, 'up');
             });
@@ -118,7 +101,8 @@
                         event.preventDefault();
 
                         if (!changeOneTimeFlag) {
-                            util.show(pullArrow);
+                            //util.show(pullArrow);
+                            util.removeClass(pullArrow, 'none');
                             opt.beforePull && opt.beforePull();
                             changeOneTimeFlag = 1;
                         }
@@ -158,9 +142,10 @@
 
                     opt.onRefresh && opt.onRefresh();
 
-                    util.hide(pullArrow);
-                    util.show(pullIcon);
+                    util.addClass(pullArrow, 'none');
+                    util.removeClass(pullIcon, 'none');
                     pullText.textContent = '正在刷新..';
+
                     scroll.style.webkitTransitionDuration = '300ms';
                     scroll.style.transitionDuration = '300ms';
                     scroll.style.webkitTransform = 'translate3d(0,' + pullTop.clientHeight + 'px,0)';
@@ -169,7 +154,8 @@
                     // 进入下拉刷新状态
                     refreshFlag = 1;
                     setTimeout(function () {
-                        util.hide(pullIcon);
+                        util.addClass(pullIcon, 'none');
+                        util.removeClass(succIcon, 'none');
                         pullText.textContent = '刷新成功';
 
                         setTimeout(function () {

@@ -2,7 +2,7 @@
 * author: "oujizeng",
 * license: "MIT",
 * name: "naturePullRefresh.js",
-* version: "1.2.0"
+* version: "1.2.1"
 */
 
 .pull-wrapper {
@@ -35,7 +35,8 @@
 	z-index: 1;
 }
 
-.pull-wrapper .pull-top .pointer {
+.pull-wrapper .pull-top .pointer,
+.pull-wrapper .pull-top .success {
 	display: inline-block;
 	margin-right: 5px;
 }
@@ -52,11 +53,22 @@
 	margin-bottom: 3px;
 }
 
+.pull-wrapper .pull-top .success:before {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	content: " ";
+	vertical-align: middle;
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADDElEQVRYR71XS1LbQBDtNsw65AQhJwicIPgEMSfAOUHsBaNiRbJyaVgYTgCcIL5BzAmiGyS+AWzNp1NPNS3GY0mWZCqqYoGsmff69Z+p4zOZTPZ3dnY+4Pjz8/Pi7Ozsb5eruOkh59yBiJww8xERHZSdExGQmDHzrbU2a3L3RgIXFxdHInJORABu88yZ+cfp6em87lAlgel0urdcLq+ZeRBcsICFIjLv9Xr3ejlI4hsRwbf4y13jn7kx5ng8Ht+XESkl4P37M5B6wczDTdYoAAi9vLxcMvMn/w7u+FrmljUCHvw3Ee15q8ZJkly20V6/TdN0xMxT/z8U6MckVghA9sfHx1+wXEQeiGiYJMmsC3ikBgLzHRFlxph+6I4VAs45gH3xlh9vCx6SEBEYhmdure3rbwUBH+35RyLSWfYqtUJ3MHNf46kg4JxDunwmooW1dn8b2avOBhiZtfYQ3+UEUGSICIFHIbuuJMJYIqJDDbxI5dzFSgBR/u0trI/A1wxK0zTz6XllrR0pAZRQFI/85RtZjmuQ+zfhfc653FiU7SRJPioB2TbyY8vLwIERusFay+wLz59t/N8UHBgxHseMYvmRPr1eL6sqw23A9W7nXK44Ar6WQEiuTNIu4D7rXgnUucB3RLRVbSpFUHUFX3NBzCiWuoTEyBhzqz3Dy7oW7VWZFKpqjHnfKA1LSKCz5d2yKtprSvJ3ZsaAk1fclUKkuVl2uIREa3Ac0EIkIrdJkgxbl+I0TW+Y+aSt5XENEJHXUuzjQJtR0Si6VsQGzahoeP+tHTvnhkR0HVfceCBRFd6kKwaFp+i2RHRnrS0m7LWRbLlcat7fM/Nx00G0RnaAY9BB1iyMMQeVI5nOBhi7/QyHVyNr7VWXeIhkf8BSUzuUhpKJCKJdK2CjJUPPlywz2CcGjcZyvcSXWgypGNP0ybw6s3Af1D0RFvrlJFzd7owxg1aLSSh3yZLR1BsLERltmqw37oaKlqbpwC+m8eoVEgIoMmm2CVgPNSYQosA9T09PKxvy7u5uViVznWT/ANJlKIABQOzqAAAAAElFTkSuQmCC");
+	background-size: 100% 100%;
+	margin-bottom: 3px;
+}
+
 .pull-wrapper .pull-top .none {
 	display: none;
 }
 
-.pull-wrapper .pull-top #arrowIcon {
+.pull-wrapper .pull-top .arrow {
 	width: 10px;
 	height: 20px;
 	display: inline-block;
