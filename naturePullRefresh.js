@@ -2,7 +2,7 @@
 * author: "oujizeng",
 * license: "MIT",
 * name: "naturePullRefresh.js",
-* version: "1.2.1"
+* version: "1.2.2"
 */
 
 (function (root, factory) {
@@ -48,7 +48,7 @@
         init: function(opt){
 
             var dragThreshold = opt.dragThreshold || 0.18,   // 临界值
-                moveCount = opt.moveCount || 200,           // 位移系数
+                moveCount = opt.moveCount || 200,            // 位移系数
 
                 // 执行完需要还原的值
                 dragStart = null,                           // 开始抓取标志位
@@ -72,8 +72,8 @@
                 }
 
                 dragStart = event.touches ? event.touches[0].pageY : event.clientY;
-                scroll.style.webkitTransform = '0ms';
-                scroll.style.transition = '0ms';
+                scroll.style.webkitTransitionDuration = '0ms';
+                scroll.style.transitionDuration = '0ms';
 
                 util.addClass(succIcon, 'none');
                 util.addClass(pullIcon, 'none');
@@ -101,7 +101,6 @@
                         event.preventDefault();
 
                         if (!changeOneTimeFlag) {
-                            //util.show(pullArrow);
                             util.removeClass(pullArrow, 'none');
                             opt.beforePull && opt.beforePull();
                             changeOneTimeFlag = 1;
