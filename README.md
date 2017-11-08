@@ -1,4 +1,4 @@
-# naturePullRefresh.js
+# native pull refresh
 
 基于原生滚动 &amp; 原生js实现的下拉刷新
 
