@@ -71,7 +71,7 @@
                     return;
                 }
 
-                dragStart = event.touches ? event.touches[0].pageY : event.touches[0].clientY;
+                dragStart = event.touches[0].pageY;
                 scroll.style.webkitTransitionDuration = '0ms';
                 scroll.style.transitionDuration = '0ms';
 
@@ -91,7 +91,7 @@
                     return;
                 }
 
-                var startY = event.touches ? event.touches[0].pageY : event.touches[0].clientY;
+                var startY = event.touches[0].pageY;
                 percentage = (dragStart - startY) / window.screen.height;
 
                 // 当scrolltop是0且往下滚动
