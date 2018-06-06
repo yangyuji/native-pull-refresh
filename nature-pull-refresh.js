@@ -31,7 +31,7 @@
 
         init: function(opt) {
 
-            var dragThreshold = opt.dragThreshold || 0.18,   // 临界值
+            var dragThreshold = opt.dragThreshold || 0.2,   // 临界值
                 moveCount = opt.moveCount || 200,            // 位移系数
 
                 // 执行完需要还原的值
@@ -78,36 +78,36 @@
                     return;
                 }
 
-                var startY = e.touches[0].pageY;
-                percentage = (dragStart - startY) / window.screen.height;
+                var startY = e.touches[0].pageY,
+                    height = window.screen.availHeight || window.screen.height;
+                percentage = (dragStart - startY) / height;
 
                 // 当scrolltop是0且往下滚动
-                if (container.scrollTop === 0 ) {
-                    if (percentage < 0) {
-
+                if (container.scrollTop === 0 && percentage < 0) {
+                    if (!e.defaultPrevented) {
                         e.preventDefault();
-
-                        if (!changeOneTimeFlag) {
-                            pullArrow.classList.remove('none');
-                            opt.beforePull && opt.beforePull();
-                            changeOneTimeFlag = 1;
-                        }
-
-                        var translateX = -percentage * moveCount;
-                        joinRefreshFlag = true;
-
-                        if (Math.abs(percentage) > dragThreshold) {
-                            pullText.textContent = '释放刷新';
-                            pullArrow.classList.remove('down');
-                            pullArrow.classList.add('up');
-                        } else {
-                            pullText.textContent = '下拉刷新';
-                            pullArrow.classList.remove('up');
-                            pullArrow.classList.add('down');
-                        }
-
-                        _css(scroll, 'Transform', 'translate3d(0,' + translateX + 'px,0)');
                     }
+
+                    if (!changeOneTimeFlag) {
+                        pullArrow.classList.remove('none');
+                        opt.beforePull && opt.beforePull();
+                        changeOneTimeFlag = 1;
+                    }
+
+                    var translateX = -percentage * moveCount;
+                    joinRefreshFlag = true;
+
+                    if (Math.abs(percentage) > dragThreshold) {
+                        pullText.textContent = '释放刷新';
+                        pullArrow.classList.remove('down');
+                        pullArrow.classList.add('up');
+                    } else {
+                        pullText.textContent = '下拉刷新';
+                        pullArrow.classList.remove('up');
+                        pullArrow.classList.add('down');
+                    }
+
+                    _css(scroll, 'Transform', 'translate3d(0,' + translateX + 'px,0)');
                 }
             });
 
