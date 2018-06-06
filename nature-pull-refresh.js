@@ -2,7 +2,7 @@
 * author: "oujizeng",
 * license: "MIT",
 * name: "nature-pull-refresh.js",
-* version: "1.2.3"
+* version: "1.2.4"
 */
 
 (function (root, factory) {
@@ -12,10 +12,24 @@
         root['pullDownRefresh'] = factory();
     }
 }(this, function () {
+    'use strict'
+
+    var _css = function (el, attr, val) {
+        var vendors = ['', 'Webkit', 'ms', 'Moz', 'O', 'Khtml'],
+            body = document.body || document.documentElement;
+
+        [].forEach.call(vendors, function (vendor) {
+            var styleAttr = vendor ? vendor + attr : attr.charAt(0).toLowerCase() + attr.substr(1);
+            // console.log(styleAttr);
+            if (typeof body.style[styleAttr] === 'string') {
+                el.style[styleAttr] = val;
+            }
+        });
+    }
 
     var pullDownRefresh = {
 
-        init: function(opt){
+        init: function(opt) {
 
             var dragThreshold = opt.dragThreshold || 0.18,   // 临界值
                 moveCount = opt.moveCount || 200,            // 位移系数
@@ -39,15 +53,14 @@
                 container = getEle(opt.container),           // 主容器
                 scroll = container.children[1];
 
-            container.addEventListener('touchstart', function (event) {
+            container.addEventListener('touchstart', function (e) {
                 if (refreshFlag) {
-                    event.preventDefault();
+                    e.preventDefault();
                     return;
                 }
 
-                dragStart = event.touches[0].pageY;
-                scroll.style.webkitTransitionDuration = '0ms';
-                scroll.style.transitionDuration = '0ms';
+                dragStart = e.touches[0].pageY;
+                _css(scroll, 'TransitionDuration', '0ms');
 
                 succIcon.classList.add('none');
                 pullIcon.classList.add('none');
@@ -56,23 +69,23 @@
                 pullArrow.classList.remove('up');
             });
 
-            container.addEventListener('touchmove', function (event) {
+            container.addEventListener('touchmove', function (e) {
                 if (dragStart === null) {
                     return;
                 }
                 if (refreshFlag) {
-                    event.preventDefault();
+                    e.preventDefault();
                     return;
                 }
 
-                var startY = event.touches[0].pageY;
+                var startY = e.touches[0].pageY;
                 percentage = (dragStart - startY) / window.screen.height;
 
                 // 当scrolltop是0且往下滚动
                 if (container.scrollTop === 0 ) {
                     if (percentage < 0) {
 
-                        event.preventDefault();
+                        e.preventDefault();
 
                         if (!changeOneTimeFlag) {
                             pullArrow.classList.remove('none');
@@ -93,20 +106,19 @@
                             pullArrow.classList.add('down');
                         }
 
-                        scroll.style.webkitTransform = 'translate3d(0,' + translateX + 'px,0)';
-                        scroll.style.transform = 'translate3d(0,' + translateX + 'px,0)';
+                        _css(scroll, 'Transform', 'translate3d(0,' + translateX + 'px,0)');
                     }
                 }
             });
 
-            container.addEventListener('touchend', function(event){
+            container.addEventListener('touchend', function(e){
 
                 if (percentage === 0) {
                     return;
                 }
 
                 if (refreshFlag) {
-                    event.preventDefault();
+                    e.preventDefault();
                     return;
                 }
 
@@ -119,10 +131,8 @@
                     pullIcon.classList.remove('none');
                     pullText.textContent = '正在刷新';
 
-                    scroll.style.webkitTransitionDuration = '300ms';
-                    scroll.style.transitionDuration = '300ms';
-                    scroll.style.webkitTransform = 'translate3d(0,' + pullTop.clientHeight + 'px,0)';
-                    scroll.style.transform = 'translate3d(0,' + pullTop.clientHeight + 'px,0)';
+                    _css(scroll, 'TransitionDuration', '300ms');
+                    _css(scroll, 'Transform', 'translate3d(0,' + pullTop.clientHeight + 'px,0)');
 
                     // 进入下拉刷新状态
                     refreshFlag = 1;
@@ -134,19 +144,15 @@
                         setTimeout(function () {
                             opt.afterPull && opt.afterPull();
                             refreshFlag = 0;
-                            scroll.style.webkitTransitionDuration = '300ms';
-                            scroll.style.transitionDuration = '300ms';
-                            scroll.style.webkitTransform = 'translate3d(0,0,0)';
-                            scroll.style.transform = 'translate3d(0,0,0)';
+                            _css(scroll, 'TransitionDuration', '300ms');
+                            _css(scroll, 'Transform', 'translate3d(0,0,0)');
                         }, 300);
                     }, 300);
 
                 } else {
                     if (joinRefreshFlag) {
-                        scroll.style.webkitTransitionDuration = '300ms';
-                        scroll.style.transitionDuration = '300ms';
-                        scroll.style.webkitTransform = 'translate3d(0,0,0)';
-                        scroll.style.transform = 'translate3d(0,0,0)';
+                        _css(scroll, 'TransitionDuration', '300ms');
+                        _css(scroll, 'Transform', 'translate3d(0,0,0)');
                     }
                 }
                 // 恢复初始化状态
