@@ -1,7 +1,7 @@
 /*
 * author: "oujizeng",
 * license: "MIT",
-* name: "naturePullRefresh.js",
+* name: "nature-pull-refresh.js",
 * version: "1.2.3"
 */
 
@@ -9,37 +9,11 @@
     if (typeof module != 'undefined' && module.exports) {
         module.exports = factory();
     } else {
-        root['NaturePullRefresh'] = factory();
+        root['pullDownRefresh'] = factory();
     }
 }(this, function () {
 
-    var getEle = function (str) {
-        return document.querySelector(str);
-    };
-
-    var util = {
-        hasClass: function (e, c) {
-            var re = new RegExp("(^|\\s)" + c + "(\\s|$)");
-            return re.test(e.className);
-        },
-        addClass: function (e, c) {
-            if ( this.hasClass(e, c) ) {
-                return;
-            }
-            var newclass = e.className.split(' ');
-            newclass.push(c);
-            e.className = newclass.join(' ');
-        },
-        removeClass: function (e, c) {
-            if ( !this.hasClass(e, c) ) {
-                return;
-            }
-            var re = new RegExp("(^|\\s)" + c + "(\\s|$)", 'g');
-            e.className = e.className.replace(re, '');
-        }
-    };
-
-    var NaturePullRefresh = {
+    var pullDownRefresh = {
 
         init: function(opt){
 
@@ -52,6 +26,10 @@
                 changeOneTimeFlag = 0,                      // 修改dom只执行1次标志位
                 joinRefreshFlag = false,                    // 进入下拉刷新状态标志位
                 refreshFlag = 0;                            // 下拉刷新执行是控制页面假死标志位
+
+            var getEle = function (str) {
+                return document.querySelector(str);
+            };
 
             var pullIcon = getEle('#pullIcon'),              // 下拉loading
                 pullText = getEle('#pullText'),              // 下拉文字
@@ -71,11 +49,11 @@
                 scroll.style.webkitTransitionDuration = '0ms';
                 scroll.style.transitionDuration = '0ms';
 
-                util.addClass(succIcon, 'none');
-                util.addClass(pullIcon, 'none');
-                util.removeClass(pullArrow, 'none');
-                util.removeClass(pullArrow, 'down');
-                util.removeClass(pullArrow, 'up');
+                succIcon.classList.add('none');
+                pullIcon.classList.add('none');
+                pullArrow.classList.remove('none');
+                pullArrow.classList.remove('down');
+                pullArrow.classList.remove('up');
             });
 
             container.addEventListener('touchmove', function (event) {
@@ -97,7 +75,7 @@
                         event.preventDefault();
 
                         if (!changeOneTimeFlag) {
-                            util.removeClass(pullArrow, 'none');
+                            pullArrow.classList.remove('none');
                             opt.beforePull && opt.beforePull();
                             changeOneTimeFlag = 1;
                         }
@@ -107,12 +85,12 @@
 
                         if (Math.abs(percentage) > dragThreshold) {
                             pullText.textContent = '释放刷新';
-                            util.removeClass(pullArrow, 'down');
-                            util.addClass(pullArrow, 'up');
+                            pullArrow.classList.remove('down');
+                            pullArrow.classList.add('up');
                         } else {
                             pullText.textContent = '下拉刷新';
-                            util.removeClass(pullArrow, 'up');
-                            util.addClass(pullArrow, 'down');
+                            pullArrow.classList.remove('up');
+                            pullArrow.classList.add('down');
                         }
 
                         scroll.style.webkitTransform = 'translate3d(0,' + translateX + 'px,0)';
@@ -137,8 +115,8 @@
 
                     opt.onRefresh && opt.onRefresh();
 
-                    util.addClass(pullArrow, 'none');
-                    util.removeClass(pullIcon, 'none');
+                    pullArrow.classList.add('none');
+                    pullIcon.classList.remove('none');
                     pullText.textContent = '正在刷新';
 
                     scroll.style.webkitTransitionDuration = '300ms';
@@ -149,8 +127,8 @@
                     // 进入下拉刷新状态
                     refreshFlag = 1;
                     setTimeout(function () {
-                        util.addClass(pullIcon, 'none');
-                        util.removeClass(succIcon, 'none');
+                        pullIcon.classList.add('none');
+                        succIcon.classList.remove('none');
                         pullText.textContent = '刷新成功';
 
                         setTimeout(function () {
@@ -181,5 +159,5 @@
         }
     };
 
-    return NaturePullRefresh;
+    return pullDownRefresh;
 }));

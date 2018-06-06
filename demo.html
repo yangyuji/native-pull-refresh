@@ -120,7 +120,7 @@
     <div class="input_cnt">发表评论...</div>
 </div>
 
-<script src="./naturePullRefresh.js"></script>
+<script src="./nature-pull-refresh.js"></script>
 <script type="text/javascript">
     function getData () {
 
@@ -155,7 +155,7 @@
         document.getElementById('list').insertBefore(frag, document.getElementById('list').firstChild);
     }
 
-    NaturePullRefresh.init({
+    pullDownRefresh.init({
         container: '#container',
         beforePull: function () {
           console.log('beforePull');
