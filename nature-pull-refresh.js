@@ -2,12 +2,14 @@
 * author: "oujizeng",
 * license: "MIT",
 * name: "nature-pull-refresh.js",
-* version: "1.2.4"
+* version: "1.2.5"
 */
 
 (function (root, factory) {
     if (typeof module != 'undefined' && module.exports) {
         module.exports = factory();
+    } else if (typeof define == 'function' && define.amd) {
+        define( function () { return factory(); } );
     } else {
         root['pullDownRefresh'] = factory();
     }
@@ -15,12 +17,11 @@
     'use strict'
 
     var _css = function (el, attr, val) {
-        var vendors = ['', 'Webkit', 'ms', 'Moz', 'O', 'Khtml'],
+        var vendors = ['', 'webkit', 'ms', 'Moz', 'O'],
             body = document.body || document.documentElement;
 
         [].forEach.call(vendors, function (vendor) {
             var styleAttr = vendor ? vendor + attr : attr.charAt(0).toLowerCase() + attr.substr(1);
-            // console.log(styleAttr);
             if (typeof body.style[styleAttr] === 'string') {
                 el.style[styleAttr] = val;
             }
