@@ -1,8 +1,9 @@
 /*
 * author: "oujizeng",
 * license: "MIT",
+* github: "https://github.com/yangyuji/native-pull-refresh",
 * name: "nature-pull-refresh.js",
-* version: "1.2.5"
+* version: "1.2.6"
 */
 
 (function (root, factory) {
@@ -16,7 +17,7 @@
 }(this, function () {
     'use strict'
 
-    var _css = function (el, attr, val) {
+    var _translate = function (el, attr, val) {
         var vendors = ['', 'webkit', 'ms', 'Moz', 'O'],
             body = document.body || document.documentElement;
 
@@ -52,7 +53,8 @@
                 pullArrow = getEle('#arrowIcon'),            // 下拉箭头
                 pullTop = getEle('#pullTop'),                // 拉动的头部
                 container = getEle(opt.container),           // 主容器
-                scroll = container.children[1];
+                scroll = container.children[1],
+                height = window.screen.availHeight || window.screen.height;
 
             container.addEventListener('touchstart', function (e) {
                 if (refreshFlag) {
@@ -61,7 +63,7 @@
                 }
 
                 dragStart = e.touches[0].pageY;
-                _css(scroll, 'TransitionDuration', '0ms');
+                _translate(scroll, 'TransitionDuration', '0ms');
 
                 succIcon.classList.add('none');
                 pullIcon.classList.add('none');
@@ -79,8 +81,7 @@
                     return;
                 }
 
-                var startY = e.touches[0].pageY,
-                    height = window.screen.availHeight || window.screen.height;
+                var startY = e.touches[0].pageY;
                 percentage = (dragStart - startY) / height;
 
                 // 当scrolltop是0且往下滚动
@@ -91,11 +92,11 @@
 
                     if (!changeOneTimeFlag) {
                         pullArrow.classList.remove('none');
-                        opt.beforePull && opt.beforePull();
+                        typeof opt.beforePull === 'function' && opt.beforePull();
                         changeOneTimeFlag = 1;
                     }
 
-                    var translateX = -percentage * moveCount;
+                    var translateY = -percentage * moveCount;
                     joinRefreshFlag = true;
 
                     if (Math.abs(percentage) > dragThreshold) {
@@ -108,7 +109,7 @@
                         pullArrow.classList.add('down');
                     }
 
-                    _css(scroll, 'Transform', 'translate3d(0,' + translateX + 'px,0)');
+                    _translate(scroll, 'Transform', 'translate3d(0,' + translateY + 'px,0)');
                 }
             });
 
@@ -126,14 +127,14 @@
                 // 超过刷新临界值
                 if (Math.abs(percentage) > dragThreshold && joinRefreshFlag) {
 
-                    opt.onRefresh && opt.onRefresh();
+                    typeof opt.onRefresh === 'function' && opt.onRefresh();
 
                     pullArrow.classList.add('none');
                     pullIcon.classList.remove('none');
                     pullText.textContent = '正在刷新';
 
-                    _css(scroll, 'TransitionDuration', '300ms');
-                    _css(scroll, 'Transform', 'translate3d(0,' + pullTop.clientHeight + 'px,0)');
+                    _translate(scroll, 'TransitionDuration', '300ms');
+                    _translate(scroll, 'Transform', 'translate3d(0,' + pullTop.clientHeight + 'px,0)');
 
                     // 进入下拉刷新状态
                     refreshFlag = 1;
@@ -143,17 +144,17 @@
                         pullText.textContent = '刷新成功';
 
                         setTimeout(function () {
-                            opt.afterPull && opt.afterPull();
+                            typeof opt.afterPull === 'function' && opt.afterPull();
                             refreshFlag = 0;
-                            _css(scroll, 'TransitionDuration', '300ms');
-                            _css(scroll, 'Transform', 'translate3d(0,0,0)');
+                            _translate(scroll, 'TransitionDuration', '300ms');
+                            _translate(scroll, 'Transform', 'translate3d(0,0,0)');
                         }, 300);
                     }, 300);
 
                 } else {
                     if (joinRefreshFlag) {
-                        _css(scroll, 'TransitionDuration', '300ms');
-                        _css(scroll, 'Transform', 'translate3d(0,0,0)');
+                        _translate(scroll, 'TransitionDuration', '300ms');
+                        _translate(scroll, 'Transform', 'translate3d(0,0,0)');
                     }
                 }
                 // 恢复初始化状态
