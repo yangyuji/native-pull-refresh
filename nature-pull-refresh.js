@@ -47,6 +47,16 @@
                 return document.querySelector(str);
             };
 
+            var supportPassive = false;
+            try {
+                var opts = Object.defineProperty({}, 'passive', {
+                    get: function() {
+                        supportPassive = true;
+                    }
+                });
+                window.addEventListener("test", null, opts);
+            } catch (e) {}
+
             var pullIcon = getEle('#pullIcon'),              // 下拉loading
                 pullText = getEle('#pullText'),              // 下拉文字
                 succIcon = getEle('#succIcon'),              // 刷新成功icon
@@ -58,7 +68,6 @@
 
             container.addEventListener('touchstart', function (e) {
                 if (refreshFlag) {
-                    e.preventDefault();
                     return;
                 }
 
@@ -70,14 +79,10 @@
                 pullArrow.classList.remove('none');
                 pullArrow.classList.remove('down');
                 pullArrow.classList.remove('up');
-            });
+            }, supportPassive ? { passive: true } : false);
 
             container.addEventListener('touchmove', function (e) {
-                if (dragStart === null) {
-                    return;
-                }
-                if (refreshFlag) {
-                    e.preventDefault();
+                if (dragStart === null || refreshFlag) {
                     return;
                 }
 
@@ -86,9 +91,6 @@
 
                 // 当scrolltop是0且往下滚动
                 if (container.scrollTop === 0 && percentage < 0) {
-                    if (!e.defaultPrevented) {
-                        e.preventDefault();
-                    }
 
                     if (!changeOneTimeFlag) {
                         pullArrow.classList.remove('none');
@@ -111,16 +113,11 @@
 
                     _translate(scroll, 'Transform', 'translate3d(0,' + translateY + 'px,0)');
                 }
-            });
+            }, supportPassive ? { passive: true } : false);
 
             container.addEventListener('touchend', function(e){
 
-                if (percentage === 0) {
-                    return;
-                }
-
-                if (refreshFlag) {
-                    e.preventDefault();
+                if (percentage === 0 || refreshFlag) {
                     return;
                 }
 
@@ -163,7 +160,7 @@
                 dragStart = null;
                 percentage = 0;
                 refreshFlag = 0;
-            });
+            }, false);
         }
     };
 
