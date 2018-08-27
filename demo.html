@@ -158,14 +158,14 @@
     pullDownRefresh.init({
         container: '#container',
         beforePull: function () {
-          console.log('beforePull');
+            console.log('beforePull');
         },
         onRefresh: function () {
-          console.log('onRefresh');
+            console.log('onRefresh');
         },
         afterPull: function () {
-          console.log('afterPull');
-          getData();
+            getData();
+            console.log('afterPull');
         }
     });
     

@@ -1,4 +1,4 @@
-/*
+/**
 * author: "oujizeng",
 * license: "MIT",
 * github: "https://github.com/yangyuji/native-pull-refresh",
@@ -10,7 +10,9 @@
     if (typeof module != 'undefined' && module.exports) {
         module.exports = factory();
     } else if (typeof define == 'function' && define.amd) {
-        define( function () { return factory(); } );
+        define(function () {
+            return factory();
+        });
     } else {
         root['pullDownRefresh'] = factory();
     }
@@ -31,10 +33,10 @@
 
     var pullDownRefresh = {
 
-        init: function(opt) {
+        init: function (opt) {
 
             var dragThreshold = opt.dragThreshold || 0.2,   // 临界值
-                moveCount = opt.moveCount || 200,            // 位移系数
+                moveCount = opt.moveCount || 200,           // 滑动距离
 
                 // 执行完需要还原的值
                 dragStart = null,                           // 开始抓取标志位
@@ -50,12 +52,13 @@
             var supportPassive = false;
             try {
                 var opts = Object.defineProperty({}, 'passive', {
-                    get: function() {
+                    get: function () {
                         supportPassive = true;
                     }
                 });
                 window.addEventListener("test", null, opts);
-            } catch (e) {}
+            } catch (e) {
+            }
 
             var pullIcon = getEle('#pullIcon'),              // 下拉loading
                 pullText = getEle('#pullText'),              // 下拉文字
@@ -115,7 +118,7 @@
                 }
             }, supportPassive ? { passive: true } : false);
 
-            container.addEventListener('touchend', function(e){
+            container.addEventListener('touchend', function () {
 
                 if (percentage === 0 || refreshFlag) {
                     return;
@@ -131,7 +134,7 @@
                     pullText.textContent = '正在刷新';
 
                     _translate(scroll, 'TransitionDuration', '300ms');
-                    _translate(scroll, 'Transform', 'translate3d(0,' + pullTop.clientHeight + 'px,0)');
+                    _translate(scroll, 'Transform', 'translate3d(0,' + pullTop.offsetHeight + 'px,0)');
 
                     // 进入下拉刷新状态
                     refreshFlag = 1;
