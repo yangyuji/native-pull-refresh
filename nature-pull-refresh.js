@@ -178,7 +178,7 @@
                 this.pullText.textContent = '正在刷新';
 
                 util._translate(this.scroll, 'TransitionDuration', '300ms');
-                util._translate(this.scroll, 'Transform', 'translate3d(0,' + this.pullTop.offsetHeight + 'px,0)');
+                util._translate(this.scroll, 'Transform', 'translate3d(0,' + this.pullTop.clientHeight + 'px,0)');
 
                 // 进入下拉刷新状态
                 this.refreshFlag = 1;
