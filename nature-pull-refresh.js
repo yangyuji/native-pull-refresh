@@ -118,10 +118,11 @@
         },
         _start: function (e) {
             if (this.refreshFlag) {
+                e.preventDefault();
                 return;
             }
 
-            this.dragStart = e.touches[0].pageY;
+            this.dragStart = e.clientY || e.touches[0].pageY;
             util._translate(this.scroll, 'TransitionDuration', '0ms');
 
             this.succIcon.classList.add('none');
@@ -131,11 +132,15 @@
             this.pullArrow.classList.remove('up');
         },
         _move: function (e) {
-            if (this.dragStart === null || this.refreshFlag) {
+            if (this.dragStart === null) {
+                return;
+            }
+            if (this.refreshFlag) {
+                e.preventDefault();
                 return;
             }
 
-            var startY = e.touches[0].pageY;
+            var startY = e.clientY || e.touches[0].pageY;
             this.percentage = (this.dragStart - startY) / this.height;
 
             // 当scrolltop是0且往下滚动
@@ -165,8 +170,12 @@
                 this.emit('pull-down');
             }
         },
-        _end: function () {
-            if (this.percentage === 0 || this.refreshFlag) {
+        _end: function (e) {
+            if (this.percentage === 0) {
+                return;
+            }
+            if (this.refreshFlag) {
+                e.preventDefault();
                 return;
             }
 
@@ -178,7 +187,7 @@
                 this.pullText.textContent = '正在刷新';
 
                 util._translate(this.scroll, 'TransitionDuration', '300ms');
-                util._translate(this.scroll, 'Transform', 'translate3d(0,' + this.pullTop.clientHeight + 'px,0)');
+                util._translate(this.scroll, 'Transform', 'translate3d(0,' + this.pullTop.offsetHeight + 'px,0)');
 
                 // 进入下拉刷新状态
                 this.refreshFlag = 1;
