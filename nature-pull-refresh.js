@@ -94,7 +94,7 @@
             this.pullIcon.classList.add('none');
             this.succIcon.classList.remove('none');
             this.pullText.textContent = '刷新成功';
-            this._animateEnd(500);
+            this._animateEnd(300);
         });
         // 刷新失败监听
         this.on('fail', function () {
@@ -102,7 +102,7 @@
             this.pullIcon.classList.add('none');
             this.pullArrow.classList.remove('none');
             this.pullText.textContent = '刷新失败';
-            this._animateEnd(500);
+            this._animateEnd(300);
         });
     }
 
