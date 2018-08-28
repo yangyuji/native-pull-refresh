@@ -123,50 +123,49 @@
 <script src="./nature-pull-refresh.js"></script>
 <script type="text/javascript">
     function getData () {
+        setTimeout(function() {
+            var str = '<div class="quan-media-box">' +
+                '                <div class="quan-media-box__person">' +
+                '                    <img class="person_avator" src="./img/etc_img_free.png">' +
+                '                    <div class="person_content">' +
+                '                        <div class="person_content-title">下来刷新效果' +
+                '                            <span class="person_content__tag hide author">圈主</span>' +
+                '                            <span class="person_content__tag top">置顶</span>' +
+                '                            <span class="person_content__tag hot">精华</span>' +
+                '                        </div>' +
+                '                        <div class="person_content-text">2017.10.28 11:37</div>' +
+                '                    </div>' +
+                '                </div>' +
+                '                <div class="quan-media-box__content ellips-content">' +
+                '                    原生js实现的下拉刷新demo' +
+                '                </div>' +
+                '            </div>', html = '';
 
-        var str = '<div class="quan-media-box">' +
-    '                <div class="quan-media-box__person">' +
-    '                    <img class="person_avator" src="./img/etc_img_free.png">' +
-    '                    <div class="person_content">' +
-    '                        <div class="person_content-title">下来刷新效果' +
-    '                            <span class="person_content__tag hide author">圈主</span>' +
-    '                            <span class="person_content__tag top">置顶</span>' +
-    '                            <span class="person_content__tag hot">精华</span>' +
-    '                        </div>' +
-    '                        <div class="person_content-text">2017.10.28 11:37</div>' +
-    '                    </div>' +
-    '                </div>' +
-    '                <div class="quan-media-box__content ellips-content">' +
-    '                    原生js实现的下拉刷新demo' +
-    '                </div>' +
-    '            </div>', html = '';
+            for (var i = 0; i < 2; i++) {
+                html += str;
+            }
 
-        for(var i = 0; i < 2; i++) {
-            html += str;
-        }
+            var temp = document.createElement('div');
+            temp.innerHTML = html;
+            var frag = document.createDocumentFragment();
+            while (temp.firstChild) {
+                frag.appendChild(temp.firstChild);
+            }
 
-        var temp = document.createElement('div');
-        temp.innerHTML = html;
-        var frag = document.createDocumentFragment();
-        while (temp.firstChild) {
-            frag.appendChild(temp.firstChild);
-        }
-
-        document.getElementById('list').insertBefore(frag, document.getElementById('list').firstChild);
+            document.getElementById('list').insertBefore(frag, document.getElementById('list').firstChild);
+            pull.emit('success');
+        }, 3000);
     }
 
-    pullDownRefresh.init({
-        container: '#container',
-        beforePull: function () {
-            console.log('beforePull');
-        },
-        onRefresh: function () {
-            console.log('onRefresh');
-        },
-        afterPull: function () {
-            getData();
-            console.log('afterPull');
-        }
+    var pull = new pullDownRefresh({
+        container: '#container'
+    });
+    pull.on('before-pull', function () {
+        console.log('beforePull');
+    });
+    pull.on('refresh', function () {
+        console.log('refresh begin');
+        getData();
     });
     
 </script>
