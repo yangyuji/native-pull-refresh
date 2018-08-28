@@ -64,17 +64,17 @@
     };
 
     function pullDownRefresh(opt) {
-        this.dragThreshold = opt.dragThreshold || 0.2,   // 临界值
-            this.moveCount = opt.moveCount || 200,           // 滑动距离
+        this.dragThreshold = opt.dragThreshold || 0.2;   // 临界值
+        this.moveCount = opt.moveCount || 200;           // 滑动距离
 
-            // 执行完需要还原的值
-            this.dragStart = null;                           // 开始抓取标志位
+        // 执行完需要还原的值
+        this.dragStart = null;                           // 开始抓取标志位
         this.percentage = 0;                             // 拖动量的百分比
         this.changeOneTimeFlag = 0;                      // 修改dom只执行1次标志位
         this.joinRefreshFlag = false;                    // 进入下拉刷新状态标志位
         this.refreshFlag = 0;                            // 下拉刷新执行是控制页面假死标志位
 
-        this.container = util.getEle(opt.container);           // 主容器
+        this.container = util.getEle(opt.container);                // 主容器
         this.pullIcon = util.getEle('#pullIcon', this.container);   // 下拉loading
         this.pullText = util.getEle('#pullText', this.container);   // 下拉文字
         this.succIcon = util.getEle('#succIcon', this.container);   // 刷新成功icon
