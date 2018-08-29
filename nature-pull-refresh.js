@@ -3,7 +3,7 @@
  * license: "MIT",
  * github: "https://github.com/yangyuji/native-pull-refresh",
  * name: "nature-pull-refresh.js",
- * version: "2.0.1"
+ * version: "2.1.0"
  */
 
 (function (root, factory) {
@@ -46,42 +46,25 @@
             [].forEach.call(vendors, function (vendor) {
                 el.addEventListener(vendor, handler, false);
             });
-        },
-        _supportPassive: function () {
-            var support = false;
-            try {
-                window.addEventListener("test", null,
-                    Object.defineProperty({}, "passive", {
-                        get: function () {
-                            support = true;
-                        }
-                    })
-                );
-            } catch (err) {
-            }
-            return support
         }
     };
 
     function pullDownRefresh(opt) {
-        this.dragThreshold = opt.dragThreshold || 0.2;   // 临界值
-        this.moveCount = opt.moveCount || 200;           // 滑动距离
+        this.moveCount = opt.moveThreshold || 50;        // 临界值
 
         // 执行完需要还原的值
-        this.dragStart = null;                           // 开始抓取标志位
-        this.percentage = 0;                             // 拖动量的百分比
+        this.dragStart = 0;                              // 开始抓取标志位
+        this.translateY = 0;                             // 拖动量的百分比
         this.changeOneTimeFlag = 0;                      // 修改dom只执行1次标志位
-        this.joinRefreshFlag = false;                    // 进入下拉刷新状态标志位
+        this.joinRefreshFlag = 0;                        // 进入下拉刷新状态标志位
         this.refreshFlag = 0;                            // 下拉刷新执行是控制页面假死标志位
 
-        this.wrapper = util.getEle(opt.wrapper);                // 主容器
+        this.wrapper = util.getEle(opt.wrapper);                  // 主容器
         this.pullIcon = util.getEle('#pullIcon', this.wrapper);   // 下拉loading
         this.pullText = util.getEle('#pullText', this.wrapper);   // 下拉文字
         this.succIcon = util.getEle('#succIcon', this.wrapper);   // 刷新成功icon
         this.pullArrow = util.getEle('#arrowIcon', this.wrapper); // 下拉箭头
         this.pullTop = util.getEle('#pullTop', this.wrapper);     // 拉动的头部
-
-        this.height = window.screen.availHeight || window.screen.height;
 
         // 采用事件驱动，不使用回调
         this._events = {};
@@ -106,7 +89,7 @@
     }
 
     pullDownRefresh.prototype = {
-        version: '2.0.1',
+        version: '2.1.0',
         destroy: function () {
             this._unbindEvents();
             this.off('before-pull');
@@ -121,7 +104,7 @@
                 return;
             }
 
-            this.dragStart = e.clientY || e.touches[0].pageY;
+            this.dragStart = e.touches[0].pageY;
             util._translate(this.wrapper, 'TransitionDuration', '0ms');
 
             this.succIcon.classList.add('none');
@@ -139,22 +122,22 @@
                 return;
             }
 
-            var startY = e.clientY || e.touches[0].pageY;
-            this.percentage = (this.dragStart - startY) / this.height;
+            var clientY = e.touches[0].pageY;
+            this.translateY = clientY - this.dragStart;
 
             // 当scrolltop是0且往下滚动
-            if (this.wrapper.scrollTop === 0 && this.percentage < 0) {
+            if (document.documentElement.scrollTop + document.body.scrollTop === 0 && this.translateY > 0) {
+
+                e.preventDefault(); // 必须，微信浏览器出现的bug
 
                 if (!this.changeOneTimeFlag) {
                     this.pullArrow.classList.remove('none');
                     this.emit('before-pull');
                     this.changeOneTimeFlag = 1;
                 }
+                this.joinRefreshFlag = 1;
 
-                var translateY = -this.percentage * this.moveCount;
-                this.joinRefreshFlag = true;
-
-                if (Math.abs(this.percentage) > this.dragThreshold) {
+                if (Math.abs(this.translateY) > this.moveCount) {
                     this.pullText.textContent = '释放刷新';
                     this.pullArrow.classList.remove('down');
                     this.pullArrow.classList.add('up');
@@ -164,13 +147,13 @@
                     this.pullArrow.classList.add('down');
                 }
 
-                util._translate(this.wrapper, 'Transform', 'translate3d(0,' + translateY + 'px,0)');
+                util._translate(this.wrapper, 'Transform', 'translate3d(0,' + this.translateY + 'px,0)');
 
                 this.emit('pull-down');
             }
         },
         _end: function (e) {
-            if (this.percentage === 0) {
+            if (this.translateY === 0) {
                 return;
             }
             if (this.refreshFlag) {
@@ -179,7 +162,7 @@
             }
 
             // 超过刷新临界值
-            if (Math.abs(this.percentage) > this.dragThreshold && this.joinRefreshFlag) {
+            if (Math.abs(this.translateY) > this.moveCount && this.joinRefreshFlag) {
 
                 this.pullArrow.classList.add('none');
                 this.pullIcon.classList.remove('none');
@@ -200,18 +183,14 @@
             }
             // 恢复初始化状态
             this.changeOneTimeFlag = 0;
-            this.joinRefreshFlag = false;
-            this.dragStart = null;
-            this.percentage = 0;
-            //this.refreshFlag = 0;
+            this.joinRefreshFlag = 0;
+            this.dragStart = 0;
         },
         _cancel: function () {
             // 恢复初始化状态
             this.changeOneTimeFlag = 0;
-            this.joinRefreshFlag = false;
-            this.dragStart = null;
-            this.percentage = 0;
-            //this.refreshFlag = 0;
+            this.joinRefreshFlag = 0;
+            this.dragStart = 0;
 
             this.pullIcon.classList.add('none');
             this.pullArrow.classList.remove('none');
@@ -234,10 +213,8 @@
             this.end = this._end.bind(this);
             this.cancel = this._cancel.bind(this);
 
-            this.wrapper.addEventListener('touchstart', this.start,
-                util._supportPassive() ? { passive: true } : false);
-            this.wrapper.addEventListener('touchmove', this.move,
-                util._supportPassive() ? { passive: true } : false);
+            this.wrapper.addEventListener('touchstart', this.start, false);
+            this.wrapper.addEventListener('touchmove', this.move, false);
             this.wrapper.addEventListener('touchend', this.end, false);
             this.wrapper.addEventListener('touchcancel', this.cancel, false);
         },

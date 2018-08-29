@@ -4,21 +4,21 @@ a light &amp; tiny pull down refresh script with no dependancy.
 
 ## use like this:
 ```html
-<div id="container" class="pull-wrapper">
+<div class="pull-wrapper">
     <div id="pullTop" class="pull-top">
         <div id="arrowIcon" class="arrow"></div>
         <div id="pullIcon" class="pointer none"></div>
         <div id="succIcon" class="success none"></div>
         <span id="pullText">刷新成功</span>
     </div>
-    <div class="pull-scroll">
-        private here
+    <div class="content-list">
+        list here
     </div>
 </div>
 ```
 ```javascript
 var pull = new pullDownRefresh({
-        container: '#container'
+        container: '.pull-wrapper'
     });
     pull.on('before-pull', function () {
         console.log('beforePull');
