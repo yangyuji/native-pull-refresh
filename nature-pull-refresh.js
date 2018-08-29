@@ -74,14 +74,13 @@
         this.joinRefreshFlag = false;                    // 进入下拉刷新状态标志位
         this.refreshFlag = 0;                            // 下拉刷新执行是控制页面假死标志位
 
-        this.container = util.getEle(opt.container);                // 主容器
-        this.pullIcon = util.getEle('#pullIcon', this.container);   // 下拉loading
-        this.pullText = util.getEle('#pullText', this.container);   // 下拉文字
-        this.succIcon = util.getEle('#succIcon', this.container);   // 刷新成功icon
-        this.pullArrow = util.getEle('#arrowIcon', this.container); // 下拉箭头
-        this.pullTop = util.getEle('#pullTop', this.container);     // 拉动的头部
+        this.wrapper = util.getEle(opt.wrapper);                // 主容器
+        this.pullIcon = util.getEle('#pullIcon', this.wrapper);   // 下拉loading
+        this.pullText = util.getEle('#pullText', this.wrapper);   // 下拉文字
+        this.succIcon = util.getEle('#succIcon', this.wrapper);   // 刷新成功icon
+        this.pullArrow = util.getEle('#arrowIcon', this.wrapper); // 下拉箭头
+        this.pullTop = util.getEle('#pullTop', this.wrapper);     // 拉动的头部
 
-        this.scroll = util.getEle('#pullScroll', this.container);
         this.height = window.screen.availHeight || window.screen.height;
 
         // 采用事件驱动，不使用回调
@@ -123,7 +122,7 @@
             }
 
             this.dragStart = e.clientY || e.touches[0].pageY;
-            util._translate(this.scroll, 'TransitionDuration', '0ms');
+            util._translate(this.wrapper, 'TransitionDuration', '0ms');
 
             this.succIcon.classList.add('none');
             this.pullIcon.classList.add('none');
@@ -144,7 +143,7 @@
             this.percentage = (this.dragStart - startY) / this.height;
 
             // 当scrolltop是0且往下滚动
-            if (this.container.scrollTop === 0 && this.percentage < 0) {
+            if (this.wrapper.scrollTop === 0 && this.percentage < 0) {
 
                 if (!this.changeOneTimeFlag) {
                     this.pullArrow.classList.remove('none');
@@ -165,7 +164,7 @@
                     this.pullArrow.classList.add('down');
                 }
 
-                util._translate(this.scroll, 'Transform', 'translate3d(0,' + translateY + 'px,0)');
+                util._translate(this.wrapper, 'Transform', 'translate3d(0,' + translateY + 'px,0)');
 
                 this.emit('pull-down');
             }
@@ -186,8 +185,8 @@
                 this.pullIcon.classList.remove('none');
                 this.pullText.textContent = '正在刷新';
 
-                util._translate(this.scroll, 'TransitionDuration', '300ms');
-                util._translate(this.scroll, 'Transform', 'translate3d(0,' + this.pullTop.offsetHeight + 'px,0)');
+                util._translate(this.wrapper, 'TransitionDuration', '300ms');
+                util._translate(this.wrapper, 'Transform', 'translate3d(0,' + this.pullTop.offsetHeight + 'px,0)');
 
                 // 进入下拉刷新状态
                 this.refreshFlag = 1;
@@ -222,9 +221,9 @@
         _animateEnd: function (timeout) {
             var _this = this;
             setTimeout(function () {
-                util._translate(_this.scroll, 'TransitionDuration', '300ms');
-                util._translate(_this.scroll, 'Transform', 'translate3d(0,0,0)');
-                util._transitionEnd(_this.scroll, function () {
+                util._translate(_this.wrapper, 'TransitionDuration', '300ms');
+                util._translate(_this.wrapper, 'Transform', 'translate3d(0,0,0)');
+                util._transitionEnd(_this.wrapper, function () {
                     _this.refreshFlag = 0;
                 });
             }, timeout);
@@ -235,18 +234,18 @@
             this.end = this._end.bind(this);
             this.cancel = this._cancel.bind(this);
 
-            this.container.addEventListener('touchstart', this.start,
+            this.wrapper.addEventListener('touchstart', this.start,
                 util._supportPassive() ? { passive: true } : false);
-            this.container.addEventListener('touchmove', this.move,
+            this.wrapper.addEventListener('touchmove', this.move,
                 util._supportPassive() ? { passive: true } : false);
-            this.container.addEventListener('touchend', this.end, false);
-            this.container.addEventListener('touchcancel', this.cancel, false);
+            this.wrapper.addEventListener('touchend', this.end, false);
+            this.wrapper.addEventListener('touchcancel', this.cancel, false);
         },
         _unbindEvents: function () {
-            this.container.removeEventListener('touchstart', this.start, false);
-            this.container.removeEventListener('touchmove', this.move, false);
-            this.container.removeEventListener('touchend', this.end, false);
-            this.container.removeEventListener('touchcancel', this.cancel, false);
+            this.wrapper.removeEventListener('touchstart', this.start, false);
+            this.wrapper.removeEventListener('touchmove', this.move, false);
+            this.wrapper.removeEventListener('touchend', this.end, false);
+            this.wrapper.removeEventListener('touchcancel', this.cancel, false);
         },
         // Event
         emit: function (type) {

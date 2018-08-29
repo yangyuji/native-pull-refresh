@@ -1,26 +1,10 @@
-/*
+/**
 * author: "oujizeng",
 * license: "MIT",
+* github: "https://github.com/yangyuji/native-pull-refresh",
 * name: "nature-pull-refresh.js",
-* version: "1.2.4"
+* version: "2.0.1"
 */
-
-.pull-wrapper {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	bottom: 0;
-	overflow-x: hidden;
-	overflow-y: scroll;
-	-webkit-overflow-scrolling: touch;
-	z-index: 1;
-}
-
-.pull-wrapper .pull-scroll {
-	position: relative;
-	z-index: 2;
-}
 
 .pull-wrapper .pull-top {
 	margin-top: -50px;
@@ -62,7 +46,7 @@
 }
 
 .pull-wrapper .pull-top .none {
-	display: none;
+	display: none!important;
 }
 
 .pull-wrapper .pull-top .arrow {

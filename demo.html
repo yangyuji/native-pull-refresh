@@ -7,24 +7,11 @@
     <meta content="telephone=no,email=no" name="format-detection">
     <title>pull down refresh</title>
     <link rel="stylesheet" href="./style.css"/>
-    <style>
-        html, body {
-            overflow: hidden;
-        }
-    </style>
+    <link rel="stylesheet" href="./nature-pull-refresh.css"/>
 </head>
 <body>
 
-<div class="top-bar fixed">
-    <img class="top-icon" src="./img/etc_img_free.png">
-    <div class="top-content">
-        <span class="top-content-title">这是标题和App名称</span>
-        <span class="top-content-text">-</span>
-    </div>
-    <a href="javascript:;" class="btn primary mini">打开App</a>
-</div>
-
-<div id="container" class="pull-wrapper">
+<div class="pull-wrapper">
 
     <div id="pullTop" class="pull-top">
         <div id="arrowIcon" class="arrow"></div>
@@ -33,7 +20,7 @@
         <span id="pullText">刷新成功</span>
     </div>
 
-    <div id="pullScroll" class="pull-scroll">
+    <div class="content-list">
 
         <div class="quan-panel has-top">
 
@@ -116,10 +103,6 @@
 
 </div>
 
-<div class="quan-page-input">
-    <div class="input_cnt">发表评论...</div>
-</div>
-
 <script src="./nature-pull-refresh.js"></script>
 <script type="text/javascript">
     function getData () {
@@ -158,7 +141,7 @@
     }
 
     var pull = new pullDownRefresh({
-        container: '#container'
+        wrapper: '.pull-wrapper'
     });
     pull.on('before-pull', function () {
         console.log('beforePull');
