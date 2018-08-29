@@ -27,6 +27,11 @@ var pull = new pullDownRefresh({
         console.log('refresh begin');
         getData();
     });
+...
+// callback success
+pull.emit('success');
+// callback fail
+pull.emit('fail');
 ```
 
 ## preview

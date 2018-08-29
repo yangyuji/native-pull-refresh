@@ -3,7 +3,7 @@
  * license: "MIT",
  * github: "https://github.com/yangyuji/native-pull-refresh",
  * name: "nature-pull-refresh.js",
- * version: "2.0.0"
+ * version: "2.0.1"
  */
 
 (function (root, factory) {
@@ -81,7 +81,7 @@
         this.pullArrow = util.getEle('#arrowIcon', this.container); // 下拉箭头
         this.pullTop = util.getEle('#pullTop', this.container);     // 拉动的头部
 
-        this.scroll = this.container.children[1];
+        this.scroll = util.getEle('#pullScroll', this.container);
         this.height = window.screen.availHeight || window.screen.height;
 
         // 采用事件驱动，不使用回调
@@ -107,7 +107,7 @@
     }
 
     pullDownRefresh.prototype = {
-        version: '1.3.0',
+        version: '2.0.1',
         destroy: function () {
             this._unbindEvents();
             this.off('before-pull');
