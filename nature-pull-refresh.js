@@ -50,11 +50,12 @@
     };
 
     function pullDownRefresh(opt) {
-        this.moveCount = opt.moveThreshold || 50;        // 临界值
+        this.moveCoefficient = opt.moveCoefficient || 0.5;  // 滑动量缩减比
+        this.moveCount = opt.moveCount || 50;               // 临界值
 
         // 执行完需要还原的值
         this.dragStart = 0;                              // 开始抓取标志位
-        this.translateY = 0;                             // 拖动量的百分比
+        this.translateY = 0;                             // 滑动值，Y轴
         this.changeOneTimeFlag = 0;                      // 修改dom只执行1次标志位
         this.joinRefreshFlag = 0;                        // 进入下拉刷新状态标志位
         this.refreshFlag = 0;                            // 下拉刷新执行是控制页面假死标志位
@@ -99,12 +100,14 @@
             this.off('fail');
         },
         _start: function (e) {
+            // 正在异步操作
             if (this.refreshFlag) {
                 e.preventDefault();
                 return;
             }
 
             this.dragStart = e.touches[0].pageY;
+            this.translateY = 0;
             util._translate(this.wrapper, 'TransitionDuration', '0ms');
 
             this.succIcon.classList.add('none');
@@ -114,21 +117,23 @@
             this.pullArrow.classList.remove('up');
         },
         _move: function (e) {
-            if (this.dragStart === null) {
+            // 从其他容器滑入
+            if (this.dragStart === 0) {
                 return;
             }
+            // 正在异步操作
             if (this.refreshFlag) {
                 e.preventDefault();
                 return;
             }
 
             var clientY = e.touches[0].pageY;
-            this.translateY = clientY - this.dragStart;
+            this.translateY = (clientY - this.dragStart) * this.moveCoefficient;
 
             // 当scrolltop是0且往下滚动
             if (document.documentElement.scrollTop + document.body.scrollTop === 0 && this.translateY > 0) {
 
-                e.preventDefault(); // 必须，微信浏览器出现的bug
+                e.preventDefault(); // 必须
 
                 if (!this.changeOneTimeFlag) {
                     this.pullArrow.classList.remove('none');
@@ -185,12 +190,14 @@
             this.changeOneTimeFlag = 0;
             this.joinRefreshFlag = 0;
             this.dragStart = 0;
+            this.translateY = 0;
         },
         _cancel: function () {
             // 恢复初始化状态
             this.changeOneTimeFlag = 0;
             this.joinRefreshFlag = 0;
             this.dragStart = 0;
+            this.translateY = 0;
 
             this.pullIcon.classList.add('none');
             this.pullArrow.classList.remove('none');
