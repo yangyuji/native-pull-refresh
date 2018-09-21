@@ -175,7 +175,7 @@
             }
 
             // 超过刷新临界值
-            if (this.translateY < 0 && Math.abs(this.translateY) > this.moveCount && this.joinRefreshFlag) {
+            if (this.translateY > this.moveCount && this.joinRefreshFlag) {
 
                 this.pullArrow.classList.add('none');
                 this.pullIcon.classList.remove('none');
