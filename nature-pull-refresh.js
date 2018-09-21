@@ -20,7 +20,7 @@
     'use strict'
 
     var util = {
-        getEle: function (str, scope) {
+        _getEle: function (str, scope) {
             var doc = scope || document;
             return doc.querySelector(str);
         },
@@ -60,12 +60,12 @@
         this.joinRefreshFlag = 0;                        // 进入下拉刷新状态标志位
         this.refreshFlag = 0;                            // 下拉刷新执行是控制页面假死标志位
 
-        this.wrapper = util.getEle(opt.wrapper);                  // 主容器
-        this.pullIcon = util.getEle('#pullIcon', this.wrapper);   // 下拉loading
-        this.pullText = util.getEle('#pullText', this.wrapper);   // 下拉文字
-        this.succIcon = util.getEle('#succIcon', this.wrapper);   // 刷新成功icon
-        this.pullArrow = util.getEle('#arrowIcon', this.wrapper); // 下拉箭头
-        this.pullTop = util.getEle('#pullTop', this.wrapper);     // 拉动的头部
+        this.wrapper = util._getEle(opt.wrapper);                  // 主容器
+        this.pullIcon = util._getEle('#pullIcon', this.wrapper);   // 下拉loading
+        this.pullText = util._getEle('#pullText', this.wrapper);   // 下拉文字
+        this.succIcon = util._getEle('#succIcon', this.wrapper);   // 刷新成功icon
+        this.pullArrow = util._getEle('#arrowIcon', this.wrapper); // 下拉箭头
+        this.pullTop = util._getEle('#pullTop', this.wrapper);     // 拉动的头部
 
         // 采用事件驱动，不使用回调
         this._events = {};
@@ -133,7 +133,7 @@
             // 当scrolltop是0且往下滚动
             if (document.documentElement.scrollTop + document.body.scrollTop === 0 && this.translateY > 0) {
 
-                e.preventDefault(); // 必须
+                e.cancelable && e.preventDefault(); // 必须
 
                 if (!this.changeOneTimeFlag) {
                     this.pullArrow.classList.remove('none');
