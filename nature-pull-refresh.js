@@ -3,7 +3,7 @@
  * license: "MIT",
  * github: "https://github.com/yangyuji/native-pull-refresh",
  * name: "nature-pull-refresh.js",
- * version: "2.1.0"
+ * version: "2.1.1"
  */
 
 (function (root, factory) {
@@ -57,7 +57,7 @@
         this.dragStart = 0;                              // 开始抓取标志位
         this.translateY = 0;                             // 滑动值，Y轴
         this.changeOneTimeFlag = 0;                      // 修改dom只执行1次标志位
-        this.joinRefreshFlag = 0;                        // 进入下拉刷新状态标志位
+        this.joinRefreshFlag = null;                     // 进入下拉刷新状态标志位
         this.refreshFlag = 0;                            // 下拉刷新执行是控制页面假死标志位
 
         this.wrapper = util._getEle(opt.wrapper);                  // 主容器
@@ -90,7 +90,7 @@
     }
 
     pullDownRefresh.prototype = {
-        version: '2.1.0',
+        version: '2.1.1',
         destroy: function () {
             this._unbindEvents();
             this.off('before-pull');
@@ -131,30 +131,38 @@
             this.translateY = (clientY - this.dragStart) * this.moveCoefficient;
 
             // 当scrolltop是0且往下滚动
-            if (document.documentElement.scrollTop + document.body.scrollTop === 0 && this.translateY > 0) {
+            if (document.documentElement.scrollTop + document.body.scrollTop === 0) {
 
-                e.cancelable && e.preventDefault(); // 必须
+                if (this.translateY > 0) {
+                    e.cancelable && e.preventDefault(); // 必须
 
-                if (!this.changeOneTimeFlag) {
-                    this.pullArrow.classList.remove('none');
-                    this.emit('before-pull');
-                    this.changeOneTimeFlag = 1;
-                }
-                this.joinRefreshFlag = 1;
+                    if (!this.changeOneTimeFlag) {
+                        this.pullArrow.classList.remove('none');
+                        this.emit('before-pull');
+                        this.changeOneTimeFlag = 1;
+                    }
 
-                if (Math.abs(this.translateY) > this.moveCount) {
-                    this.pullText.textContent = '释放刷新';
-                    this.pullArrow.classList.remove('down');
-                    this.pullArrow.classList.add('up');
+                    this.joinRefreshFlag = 1;
+
+                    if (Math.abs(this.translateY) > this.moveCount) {
+                        this.pullText.textContent = '释放刷新';
+                        this.pullArrow.classList.remove('down');
+                        this.pullArrow.classList.add('up');
+                    } else {
+                        this.pullText.textContent = '下拉刷新';
+                        this.pullArrow.classList.remove('up');
+                        this.pullArrow.classList.add('down');
+                    }
+
+                    util._translate(this.wrapper, 'Transform', 'translate3d(0,' + this.translateY + 'px,0)');
+
+                    this.emit('pull-down');
                 } else {
-                    this.pullText.textContent = '下拉刷新';
-                    this.pullArrow.classList.remove('up');
-                    this.pullArrow.classList.add('down');
+                    if (this.joinRefreshFlag === null) this.joinRefreshFlag = 0;
                 }
 
-                util._translate(this.wrapper, 'Transform', 'translate3d(0,' + this.translateY + 'px,0)');
-
-                this.emit('pull-down');
+            } else {
+                if (this.joinRefreshFlag === null) this.joinRefreshFlag = 0;
             }
         },
         _end: function (e) {
@@ -183,19 +191,20 @@
             } else {
                 // 未超过刷新临界值
                 if (this.joinRefreshFlag) {
+                    this.refreshFlag = 1;
                     this._animateEnd(0);
                 }
             }
             // 恢复初始化状态
             this.changeOneTimeFlag = 0;
-            this.joinRefreshFlag = 0;
+            this.joinRefreshFlag = null;
             this.dragStart = 0;
             this.translateY = 0;
         },
         _cancel: function () {
             // 恢复初始化状态
             this.changeOneTimeFlag = 0;
-            this.joinRefreshFlag = 0;
+            this.joinRefreshFlag = null;
             this.dragStart = 0;
             this.translateY = 0;
 
