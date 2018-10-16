@@ -36,7 +36,7 @@
             });
         },
         _transitionEnd: function (el, fun) {
-            var vendors = ['webitTransitionEnd', 'transitionend'];
+            var vendors = ['webkitTransitionEnd', 'transitionend', 'msTransitionEnd', 'oTransitionEnd'];
             var handler = function (e) {
                 [].forEach.call(vendors, function (vendor) {
                     el.removeEventListener(vendor, handler, false);
